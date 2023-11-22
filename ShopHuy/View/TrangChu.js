@@ -12,6 +12,8 @@ const TrangChu = () => {
   const [searchText, setSearchText] = useState('');
 //tim kiem 
 const [filteredData, setFilteredData] = useState([]);
+const [filteredSaleData, setFilteredSaleData] = useState([]);
+
   const renderSaleItem = ({ item }) => (
     <View style={styles.view1}>
       <Text style={styles.saleText}>Sale</Text> {/* Thêm phần tiêu đề "Sale" */}
@@ -24,27 +26,26 @@ const [filteredData, setFilteredData] = useState([]);
       </Pressable>
     </View>
   );
- useEffect(() => {
-  // Lọc dữ liệu dựa trên từ khóa tìm kiếm
-  const filteredResults = data.filter(item =>
-    item.name.toLowerCase().includes(searchText.toLowerCase())
-  );
-  setFilteredData(filteredResults);
-  console.log('Filtered Data:', filteredResults);
-}, [searchText]);
-
-  
   useEffect(() => {
-    // Sắp xếp lại dữ liệu lọc
-    const sortFilteredData = () => {
-      const sortedData = [...filteredData].sort((a, b) =>
-        a.name.localeCompare(b.name, 'vi', { sensitivity: 'base' })
-      );
-      setFilteredData(sortedData);
-    };
+    console.log('Search Text Changed:', searchText);
   
-    sortFilteredData();
-  }, [filteredData]);
+    // Lọc dữ liệu dựa trên từ khóa tìm kiếm
+    const filteredResults = data.filter(item =>
+      item.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredData(filteredResults);
+    console.log('Filtered Data:', filteredResults);
+  }, [searchText]);
+  
+
+  useEffect(() => {
+    const filteredSaleResults = datasale.filter(item =>
+      item.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredSaleData(filteredSaleResults);
+    console.log('Filtered Sale Data:', filteredSaleResults);
+  }, [searchText]);
+  
   
   return (
     <ScrollView>
@@ -86,7 +87,7 @@ const [filteredData, setFilteredData] = useState([]);
       <Text style={styles.carouselTitle}>Đề Xuất </Text>
       <FlatList
         numColumns={2}
-        data={data}
+        data={filteredData}
         renderItem={({ item }) => (
           <Pressable onPress={() => navigation.navigate('SanPham',{data:item})}>
           <View style={styles.view1}>
