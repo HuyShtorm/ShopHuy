@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable } from 'react-native';
 
 import { useCart } from './CartContext';
+
 const SanPham = ({ route }) => {
   const { data } = route.params;
   const navigation = useNavigation();
-  const { dispatch } = useCart();
+  const { cart, dispatch } = useCart();
+
+  useEffect(() => {
+    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => {
+            console.log('Navigate to Cart');
+            navigation.navigate('GioHang');
+          }}
+          style={{ marginRight: 16 }}
+        >
+          <Image source={require('../img/shop.png')} style={{ width: 24, height: 24 }} />
+          <Text style={{ color: 'white' }}>{totalItems}</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [cart, navigation]);
+
   const addToCart = () => {
     dispatch({ type: 'ADD_TO_CART', payload: data });
+    console.log('Updated Cart:', cart);
     console.log('Added to Cart:', data);
   };
+  
+  
 
   const buyNow = () => {
     // Implement logic to proceed to the checkout or payment screen
@@ -20,14 +43,11 @@ const SanPham = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      
       <Image source={data.imageLocal} style={styles.image} />
       <Text style={styles.title}>{data.name}</Text>
       <Text style={styles.shop}>{data.shop}</Text>
       <Text style={styles.price}>₫{data.price}</Text>
 
-      {/* Additional details can be added here based on your requirements */}
-      
       {/* Buttons */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button, styles.addToCartButton]} onPress={addToCart}>
@@ -65,7 +85,6 @@ const styles = StyleSheet.create({
     width: 400,
     height: 400,
     resizeMode: 'cover',
-   
   },
   title: {
     fontSize: 24,
@@ -90,7 +109,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    flex: 1, // Để nút mở rộng để đổ dữ liệu vào không gian còn lại
+    flex: 1,
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -101,12 +120,10 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   addToCartButton: {
-    backgroundColor: '#F93409', // Màu của nút "Thêm vào giỏ hàng"
-   // Khoảng cách giữa nút "Thêm vào giỏ hàng" và "Mua ngay"
+    backgroundColor: '#F93409',
   },
   buyNowButton: {
-    backgroundColor: '#3474EB', // Màu của nút "Mua ngay"
-   // Khoảng cách giữa nút "Mua ngay" và "Thêm vào giỏ hàng"
+    backgroundColor: '#3474EB',
   },
   view4: {
     flexDirection: 'row',
@@ -125,18 +142,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 24,
   },
-  img3: {
-    width: 24,
-    height: 24,
-  },
-  view: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: '#F93409',
-    width: '100%',
-  },
-
 });
 
 export default SanPham;

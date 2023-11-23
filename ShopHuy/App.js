@@ -6,6 +6,10 @@ import TrangChu from '../ShopHuy/View/TrangChu';
 import SanPham from '../ShopHuy/View/SanPham';
 import GioHang from '../ShopHuy/View/GioHang';
 import { CartProvider } from '../ShopHuy/View/CartContext';
+import DangNhap from '../ShopHuy/View/DangNhap';
+import DatHang from '../ShopHuy/View/DatHang';
+import DangKy from './View/DangKy';
+import XemDanhSachNguoiDung from './View/XemDanhSachNguoiDung';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -23,19 +27,7 @@ export default function App() {
           component={SanPham}
           options={{
             title: 'Sản Phẩm',
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => {
-                  // Xử lý sự kiện khi nhấn vào biểu tượng giỏ hàng
-                  console.log('Navigate to Cart');
-                  // Điều hướng đến màn hình giỏ hàng của bạn, bạn có thể thay đổi 'GioHang' thành màn hình giỏ hàng của bạn.
-                  navigation.navigate('GioHang');
-                }}
-                style={{ marginRight: 16 }}
-              >
-                <Image source={require('../ShopHuy/img/shop.png')} style={{ width: 24, height: 24 }} />
-              </TouchableOpacity>
-            ),
+           
           }}
         />
         <Stack.Screen
@@ -43,7 +35,37 @@ export default function App() {
           component={GioHang}
           options={{ title:'Giỏ Hàng'}}
         />
+
+<Stack.Screen name="DangNhap" component={DangNhap}  options={{
+            title: 'Đăng Nhập',
+           
+          }} />
+        <Stack.Screen name="DatHang" component={DatHang}  options={{
+            title: 'Đặt Hàng',
+           
+          }}/>
+           <Stack.Screen name="DangKy" component={DangKy}  options={{
+            title: 'Đăng Ký',
+           
+          }}/>
+          <Stack.Screen name="XemDanhSachNguoiDung" component={XemDanhSachNguoiDung}  options={{
+            title: 'Danh Sách Người Dùng',
+           
+          }}/>
       </Stack.Navigator>
     </NavigationContainer></CartProvider>
   );
 }
+// headerRight: () => (
+//   <TouchableOpacity
+//     onPress={() => {
+//       // Xử lý sự kiện khi nhấn vào biểu tượng giỏ hàng
+//       console.log('Navigate to Cart');
+//       // Điều hướng đến màn hình giỏ hàng của bạn, bạn có thể thay đổi 'GioHang' thành màn hình giỏ hàng của bạn.
+//       navigation.navigate('GioHang');
+//     }}
+//     style={{ marginRight: 16 }}
+//   >
+//     <Image source={require('../ShopHuy/img/shop.png')} style={{ width: 24, height: 24 }} />
+//   </TouchableOpacity>
+// ),

@@ -6,6 +6,7 @@ import datasale from '../data/datasale';
 import { useNavigation } from '@react-navigation/native';
 
 import SanPham from './SanPham';
+import GioHang from './GioHang';
 const TrangChu = () => {
   const navigation = useNavigation();
 
@@ -58,8 +59,9 @@ const [filteredSaleData, setFilteredSaleData] = useState([]);
             value={searchText}
             onChangeText={(text) => setSearchText(text)}
           />
-        <Pressable>
+        <Pressable onPress={() => navigation.navigate('GioHang')}>
           <Image style={styles.img3} source={require('../img/shop.png')} />
+          
         </Pressable>
         <Pressable>
           <Image style={styles.img4} source={require('../img/chatcc.png')} />
