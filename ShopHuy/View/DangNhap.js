@@ -1,27 +1,53 @@
-// DangNhap.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import AuthService from './AuthService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DangNhap = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const handleGoBack = () => {
+    navigation.navigate('TrangChu');
+  };
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
+
+  const checkLoggedIn = async () => {
+    try {
+      const user = await AuthService.getCurrentUser();
+      if (user) {
+        // Người dùng đã đăng nhập, điều hướng đến màn hình phù hợp
+        navigateToScreen(user.type);
+      }
+    } catch (error) {
+      console.error('Lỗi khi kiểm tra trạng thái đăng nhập:', error);
+    }
+  };
 
   const handleLogin = async () => {
-    const user = await AuthService.login(username, password);
-    if (user) {
-     
-      console.log('Đăng nhập thành công, user:', user);
+    try {
+      const user = await AuthService.login(username, password);
+      if (user) {
+        console.log('Đăng nhập thành công, user:', user);
 
-      // Trong DangNhap.js
-if (user.type === 'admin') {
-  navigation.navigate('XemDanhSachNguoiDung');
-} else {
-  navigation.navigate('DatHang');
-}
+        // Lưu thông tin người dùng vào AsyncStorage
+        await AsyncStorage.setItem('user', JSON.stringify(user));
 
+        // Điều hướng đến màn hình phù hợp
+        navigateToScreen(user.type);
+      }
+    } catch (error) {
+      console.error('Lỗi khi đăng nhập:', error);
     }
-    
+  };
+
+  const navigateToScreen = (userType) => {
+    if (userType === 'admin') {
+      navigation.navigate('XemDanhSachNguoiDung');
+    } else {
+      navigation.navigate('DatHang');
+    }
   };
 
   return (
@@ -40,7 +66,7 @@ if (user.type === 'admin') {
         onChangeText={(text) => setPassword(text)}
         value={password}
       />
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+     <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.loginButtonText}>Đăng Nhập</Text>
       </TouchableOpacity>
       <Text style={styles.registerText}>Nếu bạn chưa có tài khoản, hãy đăng ký</Text>
@@ -48,9 +74,12 @@ if (user.type === 'admin') {
         <Text style={styles.registerLink}>Đăng ký ngay</Text>
       </TouchableOpacity>
 
-      {/* Thêm nút "Xem Danh Sách" */}
-     
-    </View>
+      {/* Nút quay lại trang chủ */}
+      <View style={styles.goBackContainer}>
+        <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
+          <Text style={styles.goBackText}>Quay lại trang chủ</Text>
+        </TouchableOpacity>
+    </View></View>
   );
 };
 
@@ -74,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   loginButton: {
-    backgroundColor: '#3474EB',
+    backgroundColor: '#F93409',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -96,6 +125,26 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
     marginTop: 8,
+  },
+  goBackContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    paddingBottom: 16, // Khoảng cách từ nút đến đáy màn hình
+  },
+  goBackButton: {
+    backgroundColor: '#F93409',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    width: '80%', // Điều chỉnh chiều rộng của nút
+  },
+  goBackText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

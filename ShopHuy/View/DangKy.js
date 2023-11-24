@@ -5,19 +5,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DangKy = ({ navigation }) => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegister = async () => {
+    // Kiểm tra xác nhận mật khẩu
+    if (password !== confirmPassword) {
+      console.log('Mật khẩu và xác nhận mật khẩu không khớp');
+      return;
+    }
+
     // Lấy dữ liệu người dùng hiện tại từ AsyncStorage
     const existingUsers = JSON.parse(await AsyncStorage.getItem('USERS')) || [];
-  // Trong DangKy.js
-await AsyncStorage.setItem('USERS', JSON.stringify(existingUsers));
 
-
-    
-    
     // Kiểm tra xem người dùng đã tồn tại chưa
-    const userExists = existingUsers.some(user => user.username === username);
+    const userExists = existingUsers.some(user => user.username === username || user.email === email);
 
     if (userExists) {
       console.log('Người dùng đã tồn tại');
@@ -25,19 +28,16 @@ await AsyncStorage.setItem('USERS', JSON.stringify(existingUsers));
     }
 
     // Thêm người dùng mới vào danh sách
-    const newUser = { username, password };
+    const newUser = { username, email, password };
     existingUsers.push(newUser);
 
     // Lưu danh sách người dùng mới vào AsyncStorage
-   // Trong DangKy.js
-await AsyncStorage.setItem('USERS', JSON.stringify(existingUsers));
-
+    await AsyncStorage.setItem('USERS', JSON.stringify(existingUsers));
 
     console.log('Người dùng đã được đăng ký:', newUser);
 
     // Chuyển đến trang đăng nhập sau khi đăng ký thành công
     navigation.navigate('DangNhap');
-    
   };
 
   return (
@@ -51,16 +51,29 @@ await AsyncStorage.setItem('USERS', JSON.stringify(existingUsers));
       />
       <TextInput
         style={styles.input}
+        placeholder="Email"
+        onChangeText={(text) => setEmail(text)}
+        value={email}
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
         placeholder="Mật khẩu"
         secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
         value={password}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Xác nhận mật khẩu"
+        secureTextEntry={true}
+        onChangeText={(text) => setConfirmPassword(text)}
+        value={confirmPassword}
+      />
       <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
         <Text style={styles.registerButtonText}>Đăng Ký</Text>
       </TouchableOpacity>
       <Text style={styles.loginText}>Nếu bạn đã có tài khoản, hãy đăng nhập</Text>
-      {/* Thêm nút để chuyển đến trang đăng nhập */}
       <TouchableOpacity onPress={() => navigation.navigate('DangNhap')}>
         <Text style={styles.loginLink}>Đăng nhập ngay</Text>
       </TouchableOpacity>
@@ -86,7 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   registerButton: {
-    backgroundColor: '#3474EB',
+    backgroundColor: '#F93409',
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
@@ -104,6 +117,14 @@ const styles = StyleSheet.create({
     color: 'blue',
     textDecorationLine: 'underline',
     marginTop: 8,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+    borderRadius: 8,
   },
 });
 

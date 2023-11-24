@@ -39,31 +39,33 @@ const SanPham = ({ route }) => {
   const buyNow = () => {
     // Implement logic to proceed to the checkout or payment screen
     console.log('Buy Now:', data);
+    navigation.navigate('GioHang')
   };
 
   return (
     <View style={styles.container}>
       <Image source={data.imageLocal} style={styles.image} />
       <Text style={styles.title}>{data.name}</Text>
-      <Text style={styles.shop}>{data.shop}</Text>
+      <Text style={styles.shop}>Shop : {data.shop}</Text>
       <Text style={styles.price}>₫{data.price}</Text>
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, styles.addToCartButton]} onPress={addToCart}>
-          <Text style={styles.buttonText}>Thêm vào giỏ hàng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.buyNowButton]} onPress={buyNow}>
-          <Text style={[styles.buttonText, styles.buyNowText]}>Mua ngay</Text>
-        </TouchableOpacity>
-      </View>
-      
+  <TouchableOpacity style={[styles.button, styles.addToCartButton]} onPress={addToCart}>
+    <Image source={require('../img/shop.png')} style={styles.icon} />
+    <Text style={styles.buttonText}>Thêm vào giỏ hàng</Text>
+  </TouchableOpacity>
+  <TouchableOpacity style={[styles.button, styles.buyNowButton]} onPress={buyNow}>
+    <Text style={[styles.buttonText, styles.buyNowText]}>Mua ngay</Text>
+  </TouchableOpacity>
+</View>
+
       {/* View4 */}
       <View style={styles.view4}>
         <Pressable>
           <Image style={styles.img3} source={require('../img/list.png')} />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Home')}>
+        <Pressable onPress={() => navigation.navigate('TrangChu')}>
           <Image style={styles.img3} source={require('../img/home.png')} />
         </Pressable>
         <Pressable>
@@ -92,6 +94,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'left',
     flex: 0,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 8, // Khoảng cách giữa biểu tượng và văn bản
   },
   shop: {
     fontSize: 18,

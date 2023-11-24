@@ -107,7 +107,7 @@ const [filteredSaleData, setFilteredSaleData] = useState([]);
         <Pressable>
           <Image style={styles.img3} source={require('../img/list.png')} />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Home')}>
+        <Pressable onPress={() => navigation.navigate('TrangChu')}>
           <Image style={styles.img3} source={require('../img/home.png')} />
         </Pressable>
         <Pressable>
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 14, // Giảm kích thước chữ
     width: 120,
     textAlign: 'center',
+    color:'red',
   },
   carouselContainer: {
     marginBottom: 20,

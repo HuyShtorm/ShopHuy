@@ -1,11 +1,19 @@
-// ThongTinNguoiDung.js
-import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from './CartContext';
+import { useNavigation, StackActions } from '@react-navigation/native';
+import  { useEffect, useLayoutEffect } from 'react';
+// ... other imports
+
 
 const ThongTinNguoiDung = () => {
-    const { username, password, orders } = useAuth();
+  const { username, password, orders, setOrders } = useAuth();
+  const navigation = useNavigation();
+  const handleLogout = () => {
+    AuthService.currentUserType = '';
+    navigation.dispatch(StackActions.replace('DangNhap'));
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -34,9 +42,19 @@ const ThongTinNguoiDung = () => {
     saveOrdersToStorage();
   }, [orders]); // Lưu lại đơn hàng mỗi khi thay đổi danh sách đơn hàng
 
-  if (!orders) {
-    return <Text>Không có đơn hàng nào.</Text>;
-  }
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => null, // Ẩn nút quay lại
+      headerRight: () => (
+        <View style={styles.headerRight}>
+          
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButtonContainer}>
+            <Text style={styles.logoutButtonText}>Đăng Xuất</Text>
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -45,12 +63,16 @@ const ThongTinNguoiDung = () => {
       <Text>Mật khẩu: {password}</Text>
 
       <Text style={styles.ordersHeader}>Đơn Hàng Đã Đặt:</Text>
-      {orders.map((order, index) => (
-        <View key={index}>
-          <Text>Đơn hàng #{index + 1}</Text>
-          {/* Hiển thị các thông tin đơn hàng khác tùy ý */}
-        </View>
-      ))}
+      {orders && orders.length > 0 ? (
+        orders.map((order, index) => (
+          <View key={index}>
+            <Text>Đơn hàng #{index + 1}</Text>
+            {/* Hiển thị các thông tin đơn hàng khác tùy ý */}
+          </View>
+        ))
+      ) : (
+        <Text>Không có đơn hàng nào.</Text>
+      )}
     </View>
   );
 };
@@ -70,8 +92,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 16,
   },
-  orderItem: {
-    marginBottom: 8,
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // Điều chỉnh khoảng cách nút đăng xuất so với đỉnh màn hình
+  },
+  logoutButtonContainer: {
+    backgroundColor: '#F93409',
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  logoutButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

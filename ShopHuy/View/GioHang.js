@@ -66,7 +66,7 @@ const GioHang = ({ navigation }) => {
         <Pressable>
           <Image style={styles.img3} source={require('../img/list.png')} />
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Home')}>
+        <Pressable onPress={() => navigation.navigate('TrangChu')}>
           <Image style={styles.img3} source={require('../img/home.png')} />
         </Pressable>
         <Pressable>

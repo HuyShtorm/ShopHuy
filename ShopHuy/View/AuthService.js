@@ -41,9 +41,9 @@ static async saveUsers(users) {
 
   static async login(username, password) {
    // Trong AuthService.js
-if (username === 'admin' && password === 'admin') {
+if (username === 'adminHuy' && password === 'adminHuy') {
     this.currentUserType = 'admin';
-    return { username: 'admin', password: 'admin', type: 'admin' };
+    return { username: 'adminHuy', password: 'adminHuy', type: 'admin' };
   }
   
     const users = await this.getUsers();
