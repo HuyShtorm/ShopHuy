@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CartContext = createContext();
 
+export const AuthContext = createContext();
+
 const cartReducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART':
@@ -27,13 +29,37 @@ const cartReducer = (state, action) => {
     case 'REMOVE_FROM_CART':
       return state.filter(item => item.id !== action.payload.id);
       case 'SET_CART':
-        return action.payload;
-    // Các case khác
+      return action.payload;
+
     default:
       return state;
   }
 };
-// Trong CartContext.js
+export const AuthProvider = ({ children }) => {
+  const [currentUserType, setCurrentUserType] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [orders, setOrders] = useState([]);
+
+  const value = {
+    currentUserType,
+    setCurrentUserType,
+    username,
+    setUsername,
+    password,
+    setPassword,
+    orders,
+    setOrders,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+  
+};
+
 export const useCart = () => {
   const context = useContext(CartContext);
 
@@ -43,7 +69,9 @@ export const useCart = () => {
 
   return context;
 };
+  
 
+// Trong CartContext.js
 // Trong CartContext.js
 export const CartProvider = ({ children }) => {
   const [hasFetchedData, setHasFetchedData] = useState(false);
@@ -52,8 +80,6 @@ export const CartProvider = ({ children }) => {
   const fetchCartData = async () => {
     try {
       const storedCart = await AsyncStorage.getItem('cart');
-      console.log('Stored Cart:', storedCart);
-
       if (storedCart) {
         dispatch({ type: 'SET_CART', payload: JSON.parse(storedCart) });
       }
@@ -72,9 +98,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const saveCartToStorage = async () => {
       try {
-        if (Array.isArray(cart)) {
-          await AsyncStorage.setItem('cart', JSON.stringify(cart));
-        }
+        await AsyncStorage.setItem('cart', JSON.stringify(cart));
       } catch (error) {
         console.error('Lỗi khi lưu giỏ hàng vào AsyncStorage:', error);
       }
@@ -83,10 +107,15 @@ export const CartProvider = ({ children }) => {
     saveCartToStorage();
   }, [cart]);
 
+  const value = {
+    cart,
+    dispatch,
+  };
+
   return (
-    <CartContext.Provider value={{ cart, dispatch }}>
-      {children}
+    <CartContext.Provider value={value}>
+      <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     </CartContext.Provider>
   );
-  
 };
+

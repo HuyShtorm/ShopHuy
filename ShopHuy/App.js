@@ -10,6 +10,8 @@ import DangNhap from '../ShopHuy/View/DangNhap';
 import DatHang from '../ShopHuy/View/DatHang';
 import DangKy from './View/DangKy';
 import XemDanhSachNguoiDung from './View/XemDanhSachNguoiDung';
+import HoanThanh from './View/HoanThanh';
+import ThongTinNguoiDung from './View/ThongTinNguoiDung';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -50,6 +52,14 @@ export default function App() {
           }}/>
           <Stack.Screen name="XemDanhSachNguoiDung" component={XemDanhSachNguoiDung}  options={{
             title: 'Danh Sách Người Dùng',
+           
+          }}/>
+          <Stack.Screen name="HoanThanh" component={HoanThanh}  options={{
+            title: 'Hoàn Thành',
+           
+          }}/>
+         <Stack.Screen name="ThongTinNguoiDung" component={ThongTinNguoiDung}  options={{
+            title: 'Thông tin người dùng',
            
           }}/>
       </Stack.Navigator>
