@@ -1,5 +1,5 @@
 import React, { useContext, useLayoutEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image, TextInput, Picker } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, TextInput, Picker,ScrollView } from 'react-native';
 import { useCart } from './CartContext';
 import AuthService from './AuthService';
 
@@ -42,19 +42,23 @@ const DatHang = ({ navigation }) => {
     console.error('Lỗi điều hướng:', error);
   }
 };
+const navigateToCart = () => {
+  navigation.navigate('GioHang'); // Thay 'TenManHinhGioHang' bằng tên màn hình giỏ hàng của bạn
+};
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: null,
       headerRight: () => (
         <View style={styles.headerRight}>
-          <Image style={styles.icon} source={require('../img/shop.png')}  />
-          <Pressable onPress={navigateToUserInfo}>
-  <Image style={styles.icon} source={require('../img/user.png')} />
-</Pressable>
-
-          <Button title="Đăng Xuất" onPress={handleLogout} />
-        </View>
+           <Pressable onPress={navigateToCart}>
+          <Image style={styles.icon} source={require('../img/shop.png')} />
+        </Pressable>
+        <Pressable onPress={navigateToUserInfo}>
+          <Image style={styles.icon} source={require('../img/user.png')} />
+        </Pressable>
+        <Button title="Đăng Xuất" onPress={handleLogout} />
+      </View>
       ),
     });
   }, [navigation]);
@@ -62,13 +66,19 @@ const DatHang = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Trang Đặt Hàng</Text>
-      <Text style={styles.subheader}>Danh sách vật phẩm:</Text>
+      <Text style={styles.subheader}>Danh sách sản phẩm:</Text>
+      <ScrollView style={styles.cartList}>
       {cart.map((item, index) => (
         <View key={index} style={styles.item}>
-          <Text>{item.name}</Text>
-          <Text>{item.price} VNĐ</Text>
+
+          <Image source={{ uri: item.imageLocal }} style={styles.itemImage} />
+            <View style={styles.itemDetails}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text>{item.price} VNĐ</Text>
+              <Text>Số Lượng: {item.quantity}</Text>
+          </View>
         </View>
-      ))}
+      ))} </ScrollView>
       <Text style={styles.total}>Tổng cộng: {total} VNĐ</Text>
 
       {/* View địa chỉ */}
@@ -137,8 +147,30 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
+  },
+  itemImage: {
+    width: 50,
+    height: 50,
+    marginRight: 8,
+    borderRadius: 4,
+  },
+  itemDetails: {
+    flexDirection: 'column',
+  },
+  itemName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  itemPrice: {
+    fontSize: 14,
+    color: '#555', // Điều chỉnh màu sắc nếu cần
+  },
+
+  itemQuantity: {
+    fontSize: 14,
+    color: '#555', // Điều chỉnh màu sắc nếu cần
   },
   total: {
     fontSize: 18,
@@ -155,10 +187,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
+   height:20,
     backgroundColor: '#F93409',
     position: 'absolute',
     bottom: 0,
-    padding: 12,
+  
   },
   placeOrderButton: {
     color: 'white',
@@ -177,6 +210,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginVertical: 12,
+    
   },
   infoLabel: {
     fontSize: 16,
@@ -189,6 +223,9 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 8,
     padding: 8,
+  },
+  cartList: {
+    flex: 1, // Đảm bảo phần danh sách sản phẩm có thể cuộn
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'; // Import useLayoutEffect
+import React, { useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Button, Pressable, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,7 +17,6 @@ const HoanThanh = ({ route }) => {
       console.error('Lỗi điều hướng:', error);
     }
   };
-  
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -39,8 +38,12 @@ const HoanThanh = ({ route }) => {
         <Text style={styles.detailLabel}>Sản phẩm:</Text>
         {orderDetails.cart.map((item, index) => (
           <View key={index} style={styles.item}>
-            <Text>{item.name}</Text>
-            <Text>{item.price} VNĐ</Text>
+            <Image source={{ uri: item.imageLocal }} style={styles.itemImage} />
+            <View style={styles.itemDetails}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text>{item.price} VNĐ</Text>
+              <Text>Số Lượng: {item.quantity}</Text>
+            </View>
           </View>
         ))}
         <Text style={styles.detailLabel}>Tổng cộng:</Text>
@@ -77,8 +80,21 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
+  },
+  itemImage: {
+    width: 50,
+    height: 50,
+    marginRight: 8,
+    borderRadius: 4,
+  },
+  itemDetails: {
+    flexDirection: 'column',
+  },
+  itemName: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   detailLabel: {
     fontSize: 16,

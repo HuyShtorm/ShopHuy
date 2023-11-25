@@ -1,18 +1,22 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, Button, Pressable, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from './CartContext';
 import { useNavigation, StackActions } from '@react-navigation/native';
-import  { useEffect, useLayoutEffect } from 'react';
-// ... other imports
-
+import AuthService from './AuthService';
 
 const ThongTinNguoiDung = () => {
   const { username, password, orders, setOrders } = useAuth();
   const navigation = useNavigation();
+
   const handleLogout = () => {
+    console.log('Logging out...'); // Add this line
     AuthService.currentUserType = '';
     navigation.dispatch(StackActions.replace('DangNhap'));
+  };
+
+  const navigateToCart = () => {
+    navigation.navigate('GioHang');
   };
 
   useEffect(() => {
@@ -47,10 +51,10 @@ const ThongTinNguoiDung = () => {
       headerLeft: () => null, // Ẩn nút quay lại
       headerRight: () => (
         <View style={styles.headerRight}>
-          
-          <TouchableOpacity onPress={handleLogout} style={styles.logoutButtonContainer}>
-            <Text style={styles.logoutButtonText}>Đăng Xuất</Text>
-          </TouchableOpacity>
+          <Pressable onPress={navigateToCart}>
+            <Image style={styles.icon} source={require('../img/shop.png')} />
+          </Pressable>
+          <Button title="Đăng Xuất" onPress={handleLogout} />
         </View>
       ),
     });
@@ -108,6 +112,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  icon: {
+    width: 30,
+    height: 30,
+    tintColor: '#F93409',
+    marginRight: 8,
   },
 });
 
