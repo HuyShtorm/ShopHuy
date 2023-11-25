@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,Alert } from 'react-native';
 import AuthService from './AuthService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -22,6 +22,7 @@ const DangNhap = ({ navigation }) => {
       }
     } catch (error) {
       console.error('Lỗi khi kiểm tra trạng thái đăng nhập:', error);
+      
     }
   };
 
@@ -36,9 +37,12 @@ const DangNhap = ({ navigation }) => {
 
         // Điều hướng đến màn hình phù hợp
         navigateToScreen(user.type);
-      }
+      } else {
+        alert('Tên đăng nhập hoặc mật khẩu không đúng.');
+      } 
     } catch (error) {
       console.error('Lỗi khi đăng nhập:', error);
+      alert('Đã xảy ra lỗi khi đăng nhập.');
     }
   };
 

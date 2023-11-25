@@ -1,5 +1,5 @@
-// Trong CartContext.js
-import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
+
+import React, { createContext, useContext, useReducer, useEffect, useState,Alert } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CartContext = createContext();
@@ -27,6 +27,7 @@ const cartReducer = (state, action) => {
         item.id === action.payload.id ? { ...item, quantity: item.quantity + 1 } : item
       );
     case 'REMOVE_FROM_CART':
+      alert('Xóa Thành Công');
       return state.filter(item => item.id !== action.payload.id);
       case 'SET_CART':
       return action.payload;

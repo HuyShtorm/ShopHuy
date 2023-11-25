@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity ,Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable } from 'react-native';
 
@@ -32,6 +32,7 @@ const SanPham = ({ route }) => {
     dispatch({ type: 'ADD_TO_CART', payload: data });
     console.log('Updated Cart:', cart);
     console.log('Added to Cart:', data);
+    alert('Thêm vào giỏ hàng thành công');
   };
   
   
@@ -54,6 +55,7 @@ const SanPham = ({ route }) => {
   <TouchableOpacity style={[styles.button, styles.addToCartButton]} onPress={addToCart}>
     <Image source={require('../img/shop.png')} style={styles.icon} />
     <Text style={styles.buttonText}>Thêm vào giỏ hàng</Text>
+    
   </TouchableOpacity>
   <TouchableOpacity style={[styles.button, styles.buyNowButton]} onPress={buyNow}>
     <Text style={[styles.buttonText, styles.buyNowText]}>Mua ngay</Text>

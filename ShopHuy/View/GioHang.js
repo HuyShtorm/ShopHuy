@@ -133,8 +133,8 @@ quantityButton: {
   backgroundColor:'#F93409',
   borderColor: 'black',  // Màu đường viền
   borderWidth: 1,        // Độ rộng của đường viền
-  borderRadius: 8,       // Bo tròn góc
-  padding: 8,            // Khoảng cách từ nội dung đến đường viền
+  borderRadius: 8,      
+  padding: 8,            
 },
 itemQuantity: {
   fontSize: 18,
@@ -142,18 +142,18 @@ itemQuantity: {
   borderColor: 'black',  // Màu đường viền
   borderWidth: 1,        // Độ rộng của đường viền
        // Bo tròn góc
-  padding: 8,            // Khoảng cách từ nội dung đến đường viền
+  padding: 8,            
 },
 
-  // Thêm borderColor và borderWidth vào phần style của removeButton
+  
 removeButton: {
   fontSize: 20,
   color: 'black',
   backgroundColor:'#F93409',
   borderColor: 'black',  // Màu đường viền
   borderWidth: 1,        // Độ rộng của đường viền
-  borderRadius: 8,       // Bo tròn góc
-  padding: 8,            // Khoảng cách từ nội dung đến đường viền
+  borderRadius: 8,       
+  padding: 8,            
 },
 
   emptyCart: {

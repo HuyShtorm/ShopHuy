@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DangKy = ({ navigation }) => {
@@ -13,6 +13,7 @@ const DangKy = ({ navigation }) => {
     // Kiểm tra xác nhận mật khẩu
     if (password !== confirmPassword) {
       console.log('Mật khẩu và xác nhận mật khẩu không khớp');
+      alert('Mật khẩu không khớp')
       return;
     }
 
@@ -24,6 +25,7 @@ const DangKy = ({ navigation }) => {
 
     if (userExists) {
       console.log('Người dùng đã tồn tại');
+      alert('Tên đăng nhập đã tồn tại');
       return;
     }
 
@@ -35,7 +37,7 @@ const DangKy = ({ navigation }) => {
     await AsyncStorage.setItem('USERS', JSON.stringify(existingUsers));
 
     console.log('Người dùng đã được đăng ký:', newUser);
-
+alert('Đăng ký thành công')
     // Chuyển đến trang đăng nhập sau khi đăng ký thành công
     navigation.navigate('DangNhap');
   };

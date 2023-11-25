@@ -15,10 +15,12 @@ const DatHang = ({ navigation }) => {
     // Thực hiện các bước đặt hàng ở đây
     // Ví dụ, gửi đơn hàng lên server, lưu vào cơ sở dữ liệu, vv.
     if (!address || !shippingMethod || !paymentMethod) {
+   alert('Chưa nhập đầy đủ thông tin cần thiết');
       // Kiểm tra xem có thông tin địa chỉ, phương thức vận chuyển và thanh toán hay không
       // Nếu thiếu thông tin, bạn có thể hiển thị cảnh báo hoặc xử lý tùy ý
       return;
     }
+    alert('Đặt hàng thành công');
     // Sau khi đặt hàng thành công, chuyển sang trang thông báo
     navigation.navigate('HoanThanh', {
       orderDetails: {
